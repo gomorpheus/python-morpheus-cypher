@@ -5,6 +5,7 @@ from __future__ import (absolute_import, division, print_function)
 import os
 import warnings
 import requests
+import json
 
 __metaclass__ = type
 DOCUMENTATION = """
@@ -92,6 +93,13 @@ class Cypher:
 
     @staticmethod
     def _get_item(response, path):
+        # If response is a str then see if the response can be loaded from JSON
+        # can fix bug with response.json() when nested JSON objects have newlines
+        if isinstance(response, ("".__class__, u"".__class__, b"".__class__)): #check if string (python 2 and 3 compatible)
+            try:
+                response = json.loads(response)
+            except (json.JSONDecodeError, TypeError, ValueError):
+                raise Exception("Response is not valid JSON and cannot be searched for the secret path.")
         for item in path:
             if item.isdigit():
                 item = int(item)
