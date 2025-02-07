@@ -55,3 +55,6 @@ When deleting a secret, use `<type>/<name>` for the `secret_key` eg. `secret/tes
 No other arguments are required, except for the `secret_key`.
 
 A boolean from successful completion will be returned.
+
+## Note
+This Cypher Python Module can not implement additional attributes like 'true' (for example <%=cypher.read('secret/myuserpassword',true)%>) that can be used in other Morpheus task type variable evaluation. This module is bound by the constraints of the Morpheus REST API. When using the Cypher module within an internal Morpheus variable evaluation, such as <%= %>, the user will have access to a richer set of API's as there are inherent security benefits to using the internal API rather than the external REST API. Morpheus Python tasks do not have access to the internal Morpheus variable evaluation and therefore must use the external REST API that does not have the ability to pass 'true' in to obtain the cypher value from the owner of the task/workflow. Other Morpheus task/script types will give you this option.
